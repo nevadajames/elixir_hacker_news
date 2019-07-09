@@ -7,41 +7,60 @@ defmodule HackerNewsClient do
   @base_url  "https://hacker-news.firebaseio.com/v0"
   @response_format "json?print=pretty"
 
+  @doc """
+   Returns up to 500 of the top stories
+ """
   def top_stories do
     get("#{@base_url}/topstories.#{@response_format}")
     |> print_items
   end
 
+  @doc """
+   Returns up to 500 new stories
+ """
   def new_stories do
     get("#{@base_url}/newstories.#{@response_format}")
     |> print_items
   end
 
+  @doc """
+    Returns up to 500 of the best stories
+   """
   def best_stories do
     get("#{@base_url}/beststories.#{@response_format}")
     |> print_items
   end
 
-  def job_stories do
+    @doc """
+    Returns up to 200 job stories
+   """
+   def job_stories do
     get("#{@base_url}/jobstories.#{@response_format}")
     |> print_items
   end
 
+  @doc """
+  Returns up to 200 show stories
+ """
   def show_stories do
     get("#{@base_url}/showstories.#{@response_format}")
     |> print_items
   end
 
+  @doc """
+  Returns up to 200 ask stories
+ """
   def ask_stories do
     get("#{@base_url}/askstories.#{@response_format}")
     |> print_items
   end
 
+
   defp get_item(item_id) do
     get("#{@base_url}/item/#{item_id}.#{@response_format}")
     |> elem(1)
     |> IO.inspect
- end
+  end
 
   defp get(url) do
     case  HTTPoison.get(url) do
