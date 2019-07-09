@@ -5,22 +5,22 @@ See https://github.com/HackerNews/API for more information.
 #### Functions
 ```elixir
 HackerNewsClient.ask_stories()
-# Returns up to 200 ask stories
+# Returns up to 100 ask stories
 
 HackerNewsClient.best_stories()
-# Returns up to 500 of the best stories
+# Returns up to 100 of the best stories
 
 HackerNewsClient.job_stories()
-# Returns up to 200 job stories
+# Returns up to 100 job stories
 
 HackerNewsClient.new_stories()
-# Returns up to 500 new stories
+# Returns up to 100 new stories
 
 HackerNewsClient.show_stories()
-# Returns up to 200 show stories
+# Returns up to 100 show stories
 
 HackerNewsClient.top_stories()
-# Returns up to 500 of the top stories
+# Returns up to 100 of the top stories
 ```
 
 ## Installation

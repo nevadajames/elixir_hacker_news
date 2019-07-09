@@ -1,55 +1,60 @@
 defmodule HackerNewsClient do
   @moduledoc """
-  Up to 500 top and new stories are at /v0/topstories and /v0/newstories. Best stories are at /v0/beststories.
-  Up to 200 of the latest Ask HN, Show HN, and Job stories are at /v0/askstories, /v0/showstories, and /v0/jobstories.
+  API client for Hacker News API
   """
 
   @base_url  "https://hacker-news.firebaseio.com/v0"
   @response_format "json?print=pretty"
 
   @doc """
-   Returns up to 500 of the top stories
- """
+  Returns up to 100 of the top stories
+  """
+  @spec top_stories :: list()
   def top_stories do
     get("#{@base_url}/topstories.#{@response_format}")
     |> print_items
   end
 
   @doc """
-   Returns up to 500 new stories
- """
+  Returns up to 100 new stories
+  """
+  @spec new_stories :: list()
   def new_stories do
     get("#{@base_url}/newstories.#{@response_format}")
     |> print_items
   end
 
   @doc """
-    Returns up to 500 of the best stories
-   """
+  Returns up to 100 of the best stories
+  """
+  @spec best_stories :: list()
   def best_stories do
     get("#{@base_url}/beststories.#{@response_format}")
     |> print_items
   end
 
-    @doc """
-    Returns up to 200 job stories
-   """
-   def job_stories do
+  @doc """
+  Returns up to 100 job stories
+  """
+  @spec job_stories :: list()
+  def job_stories do
     get("#{@base_url}/jobstories.#{@response_format}")
     |> print_items
   end
 
   @doc """
-  Returns up to 200 show stories
- """
+  Returns up to 100 show stories
+  """
+  @spec show_stories :: list()
   def show_stories do
     get("#{@base_url}/showstories.#{@response_format}")
     |> print_items
   end
 
   @doc """
-  Returns up to 200 ask stories
- """
+  Returns up to 100 ask stories
+  """
+  @spec ask_stories :: list()
   def ask_stories do
     get("#{@base_url}/askstories.#{@response_format}")
     |> print_items
@@ -59,7 +64,6 @@ defmodule HackerNewsClient do
   defp get_item(item_id) do
     get("#{@base_url}/item/#{item_id}.#{@response_format}")
     |> elem(1)
-    |> IO.inspect
   end
 
   defp get(url) do
@@ -75,6 +79,7 @@ defmodule HackerNewsClient do
   defp print_items(item_ids) do
     item_ids
     |> elem(1)
-    |> Enum.each(fn item_id -> get_item(item_id) end)
+    |> Enum.slice(0..99)
+    |> Enum.map(fn item_id -> get_item(item_id) end)
   end
 end
