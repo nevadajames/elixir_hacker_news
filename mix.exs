@@ -7,7 +7,9 @@ defmodule HackerNewsClient.MixProject do
       version: "0.1.0",
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      package: package(),
+      description: description()
     ]
   end
 
@@ -20,17 +22,17 @@ defmodule HackerNewsClient.MixProject do
 
   defp package do
   [
-    files: ["lib", "mix.exs", "README*", "LICENSE*"],
+    files: ["lib", "mix.exs", "README*"],
     maintainers: ["Nevada Start"],
     licenses: ["MIT"],
-    links: %{"GitHub" => "https://github.com/nevadajames/elixir_hacker_news
-    """"}
+    links: %{"GitHub" => "https://github.com/nevadajames/elixir_hacker_news"}
   ]
 end
 
 defp description do
   """
   Wrapper for Hacker News api
+  """
 end
 
   # Run "mix help deps" to learn about dependencies.
