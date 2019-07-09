@@ -22,7 +22,7 @@ defmodule HackerNewsClient.MixProject do
 
   defp package do
   [
-    files: ["lib", "mix.exs", "README*"],
+    files: ["lib", "mix.exs", "README*", "LICENSE*"],
     maintainers: ["Nevada Start"],
     licenses: ["MIT"],
     links: %{"GitHub" => "https://github.com/nevadajames/elixir_hacker_news"}
