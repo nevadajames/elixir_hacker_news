@@ -2,26 +2,43 @@
 Elixir Wrapper for HackerNews API
 See https://github.com/HackerNews/API for more information.
 
-#### Functions
+#### Methods
 ```elixir
-HackerNewsClient.ask_stories()
-# Returns up to 100 ask stories
-
-HackerNewsClient.best_stories()
-# Returns up to 100 of the best stories
-
-HackerNewsClient.job_stories()
-# Returns up to 100 job stories
-
-HackerNewsClient.new_stories()
-# Returns up to 100 new stories
-
-HackerNewsClient.show_stories()
-# Returns up to 100 show stories
-
-HackerNewsClient.top_stories()
-# Returns up to 100 of the top stories
+HackerNewsClient.stories(type)
 ```
+
+Returns 100 of each type of story, accepts the following types as an atom:
+ - :top
+ - :ask
+ - :show
+ - :best
+ - :job
+ - :new
+
+
+
+--------
+
+
+```elixir
+HackerNewsClient.story_ids(type)
+```
+Returns 100 of each type of story, accepts the following types as an atom:
+ - :top
+ - :ask
+ - :show
+ - :best
+ - :job
+ - :new
+--------
+
+
+```elixir
+HackerNewsClient.get_item(id)
+```
+Accepts id as a string and retrieves story.
+
+
 
 ## Installation
 
@@ -31,7 +48,7 @@ by adding `hacker_news_client` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:hacker_news_client, "~> 0.1.0"}
+    {:hacker_news_client, "~> 0.1.1"}
   ]
 end
 ```
