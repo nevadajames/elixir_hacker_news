@@ -1,67 +1,57 @@
 defmodule HackerNewsClient do
   @moduledoc """
   API client for Hacker News API
+  For more information checkout the project at https://github.com/nevadajames/elixir_hacker_news
   """
 
   @base_url  "https://hacker-news.firebaseio.com/v0"
   @response_format "json?print=pretty"
+  @story_types [:top, :best, :new, :job, :ask, :show]
+
 
   @doc """
-  Returns up to 100 of the top stories
+  Returns ids of stories with given type as list of integers
+  Available types are:
+  - top
+  - best
+  - new
+  - job
+  - ask
+  - show
   """
-  @spec top_stories :: list()
-  def top_stories do
-    get("#{@base_url}/topstories.#{@response_format}")
-    |> print_items
+  @spec story_ids(atom) :: list()
+  def story_ids(type) when type in @story_types do
+    get("#{@base_url}/#{to_string(type)}stories.#{@response_format}")
+  end
+
+  def story_ids(type) do
+    "#{type} is not a valid option for story_ids()"
   end
 
   @doc """
-  Returns up to 100 new stories
+  Returns up to 100 stories of the following types:
+  - top
+  - best
+  - new
+  - job
+  - ask
+  - show
   """
-  @spec new_stories :: list()
-  def new_stories do
-    get("#{@base_url}/newstories.#{@response_format}")
-    |> print_items
+  @spec stories(atom) :: list()
+  def stories(type) when type in @story_types do
+    story_ids(type)
+    |> story_item_details
   end
 
-  @doc """
-  Returns up to 100 of the best stories
-  """
-  @spec best_stories :: list()
-  def best_stories do
-    get("#{@base_url}/beststories.#{@response_format}")
-    |> print_items
+  def stories(type)  do
+    "#{type} is not a valid option for stories()"
   end
 
-  @doc """
-  Returns up to 100 job stories
+  @doc"""
+  Takes story id as string and returns JSON string
   """
-  @spec job_stories :: list()
-  def job_stories do
-    get("#{@base_url}/jobstories.#{@response_format}")
-    |> print_items
-  end
-
-  @doc """
-  Returns up to 100 show stories
-  """
-  @spec show_stories :: list()
-  def show_stories do
-    get("#{@base_url}/showstories.#{@response_format}")
-    |> print_items
-  end
-
-  @doc """
-  Returns up to 100 ask stories
-  """
-  @spec ask_stories :: list()
-  def ask_stories do
-    get("#{@base_url}/askstories.#{@response_format}")
-    |> print_items
-  end
-
-
-  defp get_item(item_id) do
+  @spec get_item(String.t) :: String.t
+  def get_item(item_id) do
     get("#{@base_url}/item/#{item_id}.#{@response_format}")
     |> elem(1)
   end
@@ -76,7 +66,7 @@ defmodule HackerNewsClient do
     end
   end
 
-  defp print_items(item_ids) do
+  defp story_item_details(item_ids) do
     item_ids
     |> elem(1)
     |> Enum.slice(0..99)
