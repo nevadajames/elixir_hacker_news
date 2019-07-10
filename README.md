@@ -42,7 +42,7 @@ Accepts id as a string and retrieves story.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
+[Available in Hex](https://hex.pm/docs/publish), the package can be installed
 by adding `hacker_news_client` to your list of dependencies in `mix.exs`:
 
 ```elixir
@@ -53,6 +53,5 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/hacker_news_client](https://hexdocs.pm/hacker_news_client).
+## Contributing
+Pull Request are welcome, fork it, open an issue and I'll take a look.
