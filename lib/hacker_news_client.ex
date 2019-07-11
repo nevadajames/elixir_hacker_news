@@ -8,7 +8,6 @@ defmodule HackerNewsClient do
   @response_format "json?print=pretty"
   @story_types [:top, :best, :new, :job, :ask, :show]
 
-
   @doc """
   Returns ids of stories with given type as list of integers
   Available types are:
@@ -25,7 +24,7 @@ defmodule HackerNewsClient do
   end
 
   def story_ids(type) do
-    "#{type} is not a valid option for story_ids()"
+    "#{type} is not a valid option for story_ids/1"
   end
 
   @doc """
@@ -39,12 +38,13 @@ defmodule HackerNewsClient do
   """
   @spec stories(atom) :: list()
   def stories(type) when type in @story_types do
-    story_ids(type)
+    type
+    |>story_ids
     |> story_item_details
   end
 
   def stories(type)  do
-    "#{type} is not a valid option for stories()"
+    "#{type} is not a valid option for stories/1"
   end
 
   @doc"""
