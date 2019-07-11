@@ -53,7 +53,6 @@ defmodule HackerNewsClient do
   @spec get_item(String.t) :: String.t
   def get_item(item_id) do
     get("#{@base_url}/item/#{item_id}.#{@response_format}")
-    |> elem(1)
   end
 
   defp get(url) do
@@ -70,6 +69,7 @@ defmodule HackerNewsClient do
     item_ids
     |> elem(1)
     |> Enum.slice(0..99)
-    |> Enum.map(fn item_id -> get_item(item_id) end)
+    |> Task.async_stream(&get_item/1)
+    |> Enum.into([], fn {:ok, res} -> elem(res, 1)  end)
   end
 end

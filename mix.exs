@@ -40,6 +40,7 @@ defmodule HackerNewsClient.MixProject do
     [
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev},
+      {:benchee, "~> 1.0", only: :dev},
       {:httpoison, "~> 1.0"},
       {:poison, "~> 4.0"}
       # {:dep_from_hexpm, "~> 0.3.0"},
