@@ -110,13 +110,13 @@ HackerNewsClient.story_ids(:top)
 ##### HackerNewsClient.item/1
 ```elixir
 # Accepts id as a integer and retrieves story.
-HackerNewsClient.item(8863)
+HackerNewsClient.item(12345)
 =>
 {:ok,
  %{
    "by" => "example_user",
    "descendants" => 72,
-   "id" => 1234,
+   "id" => 12345,
    "kids" => [12, 123, 1234],
    "score" => 304,
    "time" => 1175714333,
@@ -133,7 +133,7 @@ HackerNewsClient.item(8863)
 
 ```elixir
 # Accepts id as a string and retrieves user information.
-HackerNewsClient.user('jl')
+HackerNewsClient.user('test_id')
 =>
 {:ok,
  %{
