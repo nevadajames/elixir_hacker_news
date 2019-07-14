@@ -72,11 +72,19 @@ defmodule HackerNewsClient do
   end
 
   @doc"""
-  Takes story id as string and returns JSON string
+  Takes story id returns available story information
   """
-  @spec get_item(integer) :: tuple()
-  def get_item(item_id) do
+  @spec item(integer) :: tuple()
+  def item(item_id) do
     get("#{@base_url}/item/#{item_id}.#{@response_format}")
+  end
+
+  @doc"""
+  Takes user id as string and returns available information
+  """
+  @spec user(String.t) :: tuple()
+  def user(user_id) do
+    get("#{@base_url}/user/#{user_id}.#{@response_format}")
   end
 
   defp get(url) do
@@ -91,7 +99,7 @@ defmodule HackerNewsClient do
 
   defp story_item_details(item_ids) do
     item_ids
-    |> Task.async_stream(&get_item/1)
+    |> Task.async_stream(&item/1)
     |> Enum.into([], fn {:ok, res} -> elem(res, 1)  end)
   end
 end

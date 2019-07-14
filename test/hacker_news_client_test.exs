@@ -75,15 +75,28 @@ defmodule HackerNewsClientTest do
     end
   end
 
-  describe "GET get_item" do
-    test "get_item/1 returns item as tuple" do
+  describe "GET item" do
+    test "item/1 returns item as tuple" do
       use_cassette "get_item" do
         # credo:disable-for-next-line Credo.Check.Readability.LargeNumbers
-        {:ok, item} =  HackerNewsClient.get_item(2921983)
+        {:ok, item} =  HackerNewsClient.item(2921983)
         required_keys = ["by", "id", "text", "type"]
 
         assert is_map(item)
         required_keys |> Enum.all?(&(assert(Map.has_key?(item, &1))))
+      end
+    end
+  end
+
+  describe "GET user" do
+    test "user/1 returns item as tuple" do
+      use_cassette "get_user" do
+        # credo:disable-for-next-line Credo.Check.Readability.LargeNumbers
+        {:ok, user} =  HackerNewsClient.user('jl')
+        required_keys = ["about", "id", "karma", "created"]
+
+        assert is_map(user)
+        required_keys |> Enum.all?(&(assert(Map.has_key?(user, &1))))
       end
     end
   end
