@@ -9,7 +9,10 @@ defmodule HackerNewsClient.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       package: package(),
-      description: description()
+      description: description(),
+      dialyzer: [
+        plt_file: {:no_warn, "priv/plts/dialyzer.plt"}
+      ]
     ]
   end
 
@@ -39,9 +42,12 @@ defmodule HackerNewsClient.MixProject do
   defp deps do
     [
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.0.0-rc.6", only: [:dev], runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev},
+      {:benchee, "~> 1.0", only: :dev},
       {:httpoison, "~> 1.0"},
-      {:poison, "~> 4.0"}
+      {:poison, "~> 4.0"},
+      {:exvcr, "~> 0.10", only: :test}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},
     ]

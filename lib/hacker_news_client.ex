@@ -7,7 +7,7 @@ defmodule HackerNewsClient do
   @base_url  "https://hacker-news.firebaseio.com/v0"
   @response_format "json?print=pretty"
   @story_types [:top, :best, :new, :job, :ask, :show]
-
+  @default_story_count 99
 
   @doc """
   Returns ids of stories with given type as list of integers
@@ -19,13 +19,35 @@ defmodule HackerNewsClient do
   - ask
   - show
   """
-  @spec story_ids(atom) :: list()
+  @spec story_ids(atom) :: list(integer)
   def story_ids(type) when type in @story_types do
-    get("#{@base_url}/#{to_string(type)}stories.#{@response_format}")
+    response = get("#{@base_url}/#{to_string(type)}stories.#{@response_format}")
+    elem(response, 1)
   end
 
   def story_ids(type) do
-    "#{type} is not a valid option for story_ids()"
+    "#{type} is not a valid option for story_ids/1"
+  end
+
+  @doc """
+  Returns up to specified quantity of stories of the following types:
+  - top
+  - best
+  - new
+  - job
+  - ask
+  - show
+  """
+  @spec stories(atom, integer) :: list()
+  def stories(type, quantity) when type in @story_types do
+    type
+    |>story_ids
+    |> Enum.slice(0..(quantity - 1))
+    |> story_item_details
+  end
+
+  def stories(type, _quantity)  do
+    "#{type} is not a valid option for stories/2"
   end
 
   @doc """
@@ -39,22 +61,49 @@ defmodule HackerNewsClient do
   """
   @spec stories(atom) :: list()
   def stories(type) when type in @story_types do
-    story_ids(type)
+    type
+    |>story_ids
+    |> Enum.slice(0..@default_story_count)
     |> story_item_details
   end
 
   def stories(type)  do
-    "#{type} is not a valid option for stories()"
+    "#{type} is not a valid option for stories/1"
   end
 
   @doc"""
-  Takes story id as string and returns JSON string
+  Takes story id returns available story information
   """
-  @spec get_item(String.t) :: String.t
-  def get_item(item_id) do
+  @spec item(integer) :: tuple()
+  def item(item_id) do
     get("#{@base_url}/item/#{item_id}.#{@response_format}")
-    |> elem(1)
   end
+
+  @doc"""
+  Takes user id as string and returns available information
+  """
+  @spec user(String.t) :: tuple()
+  def user(user_id) do
+    get("#{@base_url}/user/#{user_id}.#{@response_format}")
+  end
+
+  @deprecated "top_stories/0 is deprecated use stories/1"
+  def top_stories, do: stories(:top)
+
+  @deprecated "new_stories/0 is deprecated use stories/1"
+  def new_stories, do: stories(:new)
+
+  @deprecated "best_stories/0 is deprecated use stories/1"
+  def best_stories, do: stories(:best)
+
+  @deprecated "job_stories/0 is deprecated use stories/1"
+  def job_stories, do: stories(:job)
+
+  @deprecated "show_stories/0 is deprecated use stories/1"
+  def show_stories, do: stories(:show)
+
+  @deprecated "ask_stories/0 is deprecated use stories/1"
+  def ask_stories, do: stories(:ask)
 
   defp get(url) do
     case  HTTPoison.get(url) do
@@ -68,8 +117,7 @@ defmodule HackerNewsClient do
 
   defp story_item_details(item_ids) do
     item_ids
-    |> elem(1)
-    |> Enum.slice(0..99)
-    |> Enum.map(fn item_id -> get_item(item_id) end)
+    |> Task.async_stream(&item/1)
+    |> Enum.into([], fn {:ok, res} -> elem(res, 1)  end)
   end
 end
