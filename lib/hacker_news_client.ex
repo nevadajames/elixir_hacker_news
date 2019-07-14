@@ -8,6 +8,7 @@ defmodule HackerNewsClient do
   @base_url  "https://hacker-news.firebaseio.com/v0"
   @response_format "json?print=pretty"
   @story_types [:top, :best, :new, :job, :ask, :show]
+  @default_story_count 99
 
   @doc """
   Returns ids of stories with given type as list of integers
@@ -19,7 +20,7 @@ defmodule HackerNewsClient do
   - ask
   - show
   """
-  @spec story_ids(atom) :: list()
+  @spec story_ids(atom) :: list(integer)
   def story_ids(type) when type in @story_types do
     response = get("#{@base_url}/#{to_string(type)}stories.#{@response_format}")
     elem(response, 1)
@@ -30,7 +31,7 @@ defmodule HackerNewsClient do
   end
 
   @doc """
-  Returns up to 100 stories of the following types:
+  Returns up to specified quantity of stories of the following types:
   - top
   - best
   - new
@@ -47,13 +48,34 @@ defmodule HackerNewsClient do
   end
 
   def stories(type, _quantity)  do
+    "#{type} is not a valid option for stories/2"
+  end
+
+  @doc """
+  Returns up to 100 stories of the following types:
+  - top
+  - best
+  - new
+  - job
+  - ask
+  - show
+  """
+  @spec stories(atom) :: list()
+  def stories(type) when type in @story_types do
+    type
+    |>story_ids
+    |> Enum.slice(0..@default_story_count)
+    |> story_item_details
+  end
+
+  def stories(type)  do
     "#{type} is not a valid option for stories/1"
   end
 
   @doc"""
   Takes story id as string and returns JSON string
   """
-  @spec get_item(String.t) :: String.t
+  @spec get_item(integer) :: tuple()
   def get_item(item_id) do
     get("#{@base_url}/item/#{item_id}.#{@response_format}")
   end

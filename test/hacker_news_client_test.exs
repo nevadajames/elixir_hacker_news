@@ -21,7 +21,7 @@ defmodule HackerNewsClientTest do
     end
   end
 
-  describe "GET stories" do
+  describe "GET stories/2" do
     test "get_stories(:top, 2) returns list of maps" do
       use_cassette "get_top_stories" do
         top_stories = HackerNewsClient.stories(:top, 2)
@@ -44,7 +44,47 @@ defmodule HackerNewsClientTest do
     end
 
     test "invalid stories type returns warning" do
-      assert HackerNewsClient.stories(:invalid, 100) == "invalid is not a valid option for stories/1"
+      assert HackerNewsClient.stories(:invalid, 100) == "invalid is not a valid option for stories/2"
+    end
+  end
+
+  describe "GET stories/1" do
+    test "get_stories(:top, 2) returns list of maps" do
+      use_cassette "get_top_stories" do
+        top_stories = HackerNewsClient.stories(:top, 2)
+
+        Enum.each top_stories, fn story  ->
+          assert(is_map(story))
+        end
+      end
+    end
+
+    test "stories have correct keys" do
+      use_cassette "get_top_stories_default_count" do
+        top_stories = HackerNewsClient.stories(:top)
+        required_keys = ["by", "id", "title", "type"]
+
+        Enum.each top_stories, fn story  ->
+          required_keys |> Enum.all?(&(assert(Map.has_key?(story, &1))))
+        end
+      end
+    end
+
+    test "invalid stories type returns warning" do
+      assert HackerNewsClient.stories(:invalid) == "invalid is not a valid option for stories/1"
+    end
+  end
+
+  describe "GET get_item" do
+    test "get_item/1 returns item as tuple" do
+      use_cassette "get_item" do
+        # credo:disable-for-next-line Credo.Check.Readability.LargeNumbers
+        {:ok, item} =  HackerNewsClient.get_item(2921983)
+        required_keys = ["by", "id", "text", "type"]
+
+        assert is_map(item)
+        required_keys |> Enum.all?(&(assert(Map.has_key?(item, &1))))
+      end
     end
   end
 end
