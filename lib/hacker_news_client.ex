@@ -1,4 +1,5 @@
 defmodule HackerNewsClient do
+  require IEx
   @moduledoc """
   API client for Hacker News API
   For more information checkout the project at https://github.com/nevadajames/elixir_hacker_news
@@ -20,7 +21,8 @@ defmodule HackerNewsClient do
   """
   @spec story_ids(atom) :: list()
   def story_ids(type) when type in @story_types do
-    get("#{@base_url}/#{to_string(type)}stories.#{@response_format}")
+    response = get("#{@base_url}/#{to_string(type)}stories.#{@response_format}")
+    elem(response, 1)
   end
 
   def story_ids(type) do
@@ -36,14 +38,15 @@ defmodule HackerNewsClient do
   - ask
   - show
   """
-  @spec stories(atom) :: list()
-  def stories(type) when type in @story_types do
+  @spec stories(atom, integer) :: list()
+  def stories(type, quantity) when type in @story_types do
     type
     |>story_ids
+    |> Enum.slice(0..(quantity - 1))
     |> story_item_details
   end
 
-  def stories(type)  do
+  def stories(type, _quantity)  do
     "#{type} is not a valid option for stories/1"
   end
 
@@ -67,8 +70,6 @@ defmodule HackerNewsClient do
 
   defp story_item_details(item_ids) do
     item_ids
-    |> elem(1)
-    |> Enum.slice(0..99)
     |> Task.async_stream(&get_item/1)
     |> Enum.into([], fn {:ok, res} -> elem(res, 1)  end)
   end
