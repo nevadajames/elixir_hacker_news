@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/nevadajames/elixir_hacker_news.svg?branch=master)](https://travis-ci.com/nevadajames/elixir_hacker_news)
+
 # HackerNewsClient
 Elixir Wrapper for HackerNews API
 See https://github.com/HackerNews/API for more information.
