@@ -1,4 +1,4 @@
-# 0.2.0
+#0.2.0
 * add users/1
 * change get_item/1 to item/1
 * Revert methods broken by v0.1.1 and add deprecation warnings
@@ -16,7 +16,6 @@
   - `ask_stories/1`
   - `show_stories/1`
 
-``
 #0.1.0
 * added methods to get best, top, ask, show, new, and job stories
 * created `HackerNewsClient`
