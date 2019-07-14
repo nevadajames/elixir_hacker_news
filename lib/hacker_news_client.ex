@@ -1,5 +1,4 @@
 defmodule HackerNewsClient do
-  require IEx
   @moduledoc """
   API client for Hacker News API
   For more information checkout the project at https://github.com/nevadajames/elixir_hacker_news

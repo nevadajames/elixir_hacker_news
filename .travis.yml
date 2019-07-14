@@ -6,3 +6,8 @@ elixir:
 script:
   - mix credo --strict
   - mix test
+  - mix dialyzer --halt-exit-status
+
+cache:
+  directories:
+  - priv/plts
