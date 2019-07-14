@@ -22,4 +22,9 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 hacker_news_client-*.tar
 
+# RubyMine specific files
 .idea/*
+
+# Dialyzer
+/priv/plts/*.plt
+/priv/plts/*.plt.hash
