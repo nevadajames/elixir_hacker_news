@@ -87,6 +87,24 @@ defmodule HackerNewsClient do
     get("#{@base_url}/user/#{user_id}.#{@response_format}")
   end
 
+  @deprecated "top_stories/0 is deprecated use stories/1"
+  def top_stories, do: stories(:top)
+
+  @deprecated "new_stories/0 is deprecated use stories/1"
+  def new_stories, do: stories(:new)
+
+  @deprecated "best_stories/0 is deprecated use stories/1"
+  def best_stories, do: stories(:best)
+
+  @deprecated "job_stories/0 is deprecated use stories/1"
+  def job_stories, do: stories(:job)
+
+  @deprecated "show_stories/0 is deprecated use stories/1"
+  def show_stories, do: stories(:show)
+
+  @deprecated "ask_stories/0 is deprecated use stories/1"
+  def ask_stories, do: stories(:ask)
+
   defp get(url) do
     case  HTTPoison.get(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
